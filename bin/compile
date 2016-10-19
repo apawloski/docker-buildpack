@@ -1,13 +1,5 @@
 #! /bin/bash
 
-echo "We called compile correctly!!!!"
-echo "HERE ARE MY ARGUMENTS: $@"
-echo "HERE ARE MY ARGUMENTS: $@"
-echo "HERE ARE MY ARGUMENTS: $@"
-echo "HERE ARE MY ARGUMENTS: $@"
-echo "HERE ARE MY ARGUMENTS: $@"
-echo "HERE ARE MY ARGUMENTS: $@"
-
 # fail fast
 set -e
 
@@ -19,4 +11,5 @@ export ENV_DIR=$3
 BP_DIR=$(cd $(dirname $0)/..; pwd)
 BIN_DIR=$BP_DIR/bin
 
-docker build -t "andrew-test" .
+# $app_name is set in the slugbuilder script
+docker build -t "$app_name" .
