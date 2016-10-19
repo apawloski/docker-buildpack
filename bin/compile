@@ -1,6 +1,12 @@
 #! /bin/bash
 
 echo "We called compile correctly!!!!"
+echo "HERE ARE MY ARGUMENTS: $@"
+echo "HERE ARE MY ARGUMENTS: $@"
+echo "HERE ARE MY ARGUMENTS: $@"
+echo "HERE ARE MY ARGUMENTS: $@"
+echo "HERE ARE MY ARGUMENTS: $@"
+echo "HERE ARE MY ARGUMENTS: $@"
 
 # fail fast
 set -e
