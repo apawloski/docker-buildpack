@@ -1,15 +1,16 @@
 #! /bin/bash
 
 echo "We called compile correctly!!!!"
-echo "We called compile correctly!!!!"
-echo "We called compile correctly!!!!"
-echo "We called compile correctly!!!!"
-echo "We called compile correctly!!!!"
-echo "We called compile correctly!!!!"
-echo "We called compile correctly!!!!"
-echo "We called compile correctly!!!!"
-echo "We called compile correctly!!!!"
-echo "We called compile correctly!!!!"
-echo "We called compile correctly!!!!"
-echo "We called compile correctly!!!!"
-echo "We called compile correctly!!!!"
+
+# fail fast
+set -e
+
+# parse args
+export BUILD_DIR=$1
+export CACHE_DIR=$2
+export ENV_DIR=$3
+
+BP_DIR=$(cd $(dirname $0)/..; pwd)
+BIN_DIR=$BP_DIR/bin
+
+docker build -t "andrew-test" .
