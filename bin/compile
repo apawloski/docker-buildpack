@@ -7,9 +7,34 @@ set -e
 export BUILD_DIR=$1
 export CACHE_DIR=$2
 export ENV_DIR=$3
+export version="latest" # We should pick this up from somewhere
 
 BP_DIR=$(cd $(dirname $0)/..; pwd)
 BIN_DIR=$BP_DIR/bin
 
+#### Build the docker image
+
 # $app_name is set in the slugbuilder script
+# TODO: Version?
 docker build -t "$app_name" .
+
+#### Upload the image to ECR
+
+# Does the ECR repo exist?
+repo_name="ngap_app_${app_name}" # Shh.. Magic
+repo_exists=$(aws ecr describe-repositories | grep -c "$repo_name")
+
+# If not, create the repo
+if [ ! repo_exists ]; then
+    aws ecr create-repository --repository-name "$repo_name"
+fi
+
+# Configure docker to push to ECR
+eval $(aws ecr get-login)
+
+# Tag
+repository_uri=$(aws ecr describe-repositories --repository-name "repo_name" | awk '/repositoryUri/ { print $2 }')
+docker tag "$app_name":"$version" "$repo_name"
+
+# Push
+docker push "$repo_name"
