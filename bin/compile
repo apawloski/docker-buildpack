@@ -47,9 +47,9 @@ eval $(aws ecr get-login)
 
 # Tag
 echo "I'm tagging the image"
-repository_uri=$(aws ecr describe-repositories --repository-name "repo_name" | awk '/repositoryUri/ { print $2 }')
-docker tag "$app_name":"$version" "$repo_name"
+repository_uri=$(aws ecr describe-repositories --repository-name "$repo_name" | awk '/repositoryUri/ { print $2 }')
+docker tag "$app_name":"$version" "$repository_uri"
 
 # Push
-echo "I'm pushing the image to $repo_name"
-docker push "$repo_name"
+echo "I'm pushing the image to $repository_uri"
+docker push "$repository_uri"
