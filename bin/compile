@@ -1,7 +1,7 @@
 #! /bin/bash
 
 # fail fast
-set -e
+# set -e
 
 # parse args
 export BUILD_DIR=$1
@@ -30,6 +30,15 @@ repo_exists=$(aws ecr describe-repositories | grep -c "$repo_name")
 if [ $repo_exists -eq 0 ]; then
     echo "I'm creating the repo in ECR"
     aws ecr create-repository --repository-name "$repo_name"
+    
+    TIMEOUT=600
+    exists=0
+    while [ $TIMEOUT -gt 0 && $exists -eq 0 ]; do
+	exists=$(aws ecr describe-repositories | grep -c "$repo_name")
+	echo "I'm waiting for the repo to exist. Will try $TIMEOUT more times"
+	sleep 1
+	TIMEOUT=$((TIMEOUT-1))
+    done
 fi
 
 # Configure docker to push to ECR
